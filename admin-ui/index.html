@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#121212">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Aklatak">
+  <meta name="color-scheme" content="light dark">
+  <title data-i18n-title="admin.title">لوحة الإدارة</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Pacifico&family=Readex+Pro:wght@300;400;500;600&family=Tajawal:wght@400;500;700;800&display=swap">
+  <link rel="stylesheet" href="/assets/styles.css?v=610">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="dx-scoped.css?v=770">
+  <link rel="stylesheet" href="/theme.css">
+  <link rel="stylesheet" href="shell.css?v=770">
+  <script type="module" src="admin.js"></script>
+  <script src="delivery.js?v=770" defer></script>
+  <script src="shell.js?v=770" defer></script>
+</head>
+<body>
+  <main class="shell admin">
+    <header class="masthead">
+      <a class="wordmark" href="./"><img class="logo-mark" src="/assets/logo.svg" alt="" width="30" height="30"><b data-i18n="brand.name">Aklatak</b><span data-i18n="admin.title">لوحة الإدارة</span></a>
+      <button class="btn-text" id="logoutBtn" hidden data-i18n="admin.logout">خروج</button>
+    </header>
+
+    <section id="loginView" hidden>
+      <h1 class="title" data-i18n="admin.loginTitle">دخول الإدارة</h1>
+      <div id="loginError" class="alert" role="alert" hidden></div>
+      <form id="loginForm">
+        <div class="field"><label for="u" data-i18n="admin.username"></label><input class="input" id="u" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" required></div>
+        <div class="field"><label for="p" data-i18n="admin.password"></label><input class="input" id="p" name="password" type="password" autocomplete="current-password" autocapitalize="none" dir="ltr" required></div>
+        <button class="btn btn-gold" type="submit" data-i18n="admin.signIn">دخول</button>
+      </form>
+      <!-- Step 2 (when the admin requires a passkey) -->
+      <div id="mfaStep" hidden>
+        <p class="lead" data-i18n="admin.mfaLead"></p>
+        <button class="btn btn-gold" type="button" id="passkeyLogin" data-i18n="admin.mfaPasskey"></button>
+        <details class="panel"><summary data-i18n="admin.mfaUseCode"></summary>
+          <form id="backupForm"><input class="input" name="code" dir="ltr" autocomplete="one-time-code" placeholder="xxxx-xxxx">
+            <button class="btn btn-ghost" type="submit" data-i18n="admin.signIn"></button></form>
+        </details>
+      </div>
+    </section>
+
+    <section id="dashView" hidden>
+      <div id="adminWarn" class="alert" hidden data-i18n="admin.adminWhatsappMissing"></div>
+      <div class="stats" id="stats"></div>
+      <div class="toolbar">
+        <input class="input" id="q" type="search" data-i18n-placeholder="admin.search">
+        <select class="input" id="countryFilter" aria-label="Country"></select>
+        <button class="btn btn-gold" id="addBtn" type="button" data-i18n="admin.addCook">إضافة طبّاخ</button>
+      </div>
+      <nav class="tabs kind-tabs" id="kindTabs" role="tablist">
+        <button type="button" data-kind="cook" aria-selected="true" data-i18n="admin.kindCooks">الطبّاخون</button>
+        <button type="button" data-kind="restaurant" aria-selected="false" data-i18n="admin.kindRestaurants">المطاعم</button>
+      </nav>
+      <nav class="tabs" id="tabs" role="tablist"></nav>
+      <p class="fine" id="listTotal"></p>
+      <p class="agent-banner" id="agentBanner" hidden></p>
+      <div class="country-bar" id="countryBar"></div>
+      <p><button class="btn btn-ghost danger" type="button" id="delImported" hidden data-i18n="admin.delImported"></button></p>
+      <p><a class="btn btn-ghost" id="exportCsv" href="/api/admin/export/subscribers.csv" data-i18n="admin.exportCsv"></a></p>
+      <ul class="admin-list" id="list"></ul>
+      <p class="fine" id="emptyList" hidden data-i18n="admin.empty"></p>
+      <button class="btn btn-ghost" type="button" id="moreBtn" hidden data-i18n="admin.loadMore"></button>
+      <div id="supportView" hidden>
+        <ul class="admin-list" id="supportList"></ul>
+        <p class="fine" id="supportEmpty" hidden data-i18n="admin.supportEmpty"></p>
+      </div>
+      <div id="feedbackView" hidden>
+        <nav class="tabs" id="fbTabs"></nav>
+        <ul class="admin-list" id="fbList"></ul>
+        <p class="fine" id="fbEmpty" hidden data-i18n="admin.feedbackEmpty"></p>
+      </div>
+      <details class="panel" id="pagesPanel">
+        <summary data-i18n="admin.pagesTitle"></summary>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.pagesWhich"></label><select class="input" id="pgKey">
+            <option value="about" data-i18n="pages.about.title"></option><option value="terms" data-i18n="pages.terms.title"></option>
+            <option value="privacy" data-i18n="pages.privacy.title"></option><option value="delete-account" data-i18n="pages.delete-account.title"></option></select></div>
+          <div class="field"><label data-i18n="admin.pagesLang"></label><select class="input" id="pgLang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option></select></div>
+        </div>
+        <div class="field"><label data-i18n="admin.pagesHeading"></label><input class="input" id="pgTitle" maxlength="200"></div>
+        <div class="field"><label data-i18n="admin.pagesBody"></label><textarea class="input" id="pgBody" rows="14" maxlength="6000"></textarea></div>
+        <label class="consent-label"><input type="checkbox" id="pgTranslate" checked> <span data-i18n="admin.textsTranslate"></span></label>
+        <p><button class="btn btn-gold" type="button" id="pgSave" data-i18n="admin.saveSettings"></button></p>
+        <p class="fine" id="pgMsg" aria-live="polite"></p>
+      </details>
+      <details class="panel" id="refPanel">
+        <summary data-i18n="admin.refTitle"></summary>
+        <p class="fine" data-i18n="admin.refHint"></p>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.refName"></label><input class="input" id="refName" maxlength="80"></div>
+          <div class="field"><label data-i18n="admin.refContact"></label><input class="input" id="refContact" maxlength="80" dir="auto"></div>
+          <div class="field"><label data-i18n="admin.refCommission"></label><input class="input" id="refCommission" type="number" min="0" step="0.5" dir="ltr" placeholder="2"></div>
+          <div class="field"><label data-i18n="admin.refCurrency"></label><input class="input" id="refCurrency" maxlength="3" dir="ltr" value="USD"></div>
+          <div class="field owner-only"><label data-i18n="admin.agCountry"></label><select class="input" id="refCountry"></select></div>
+        </div>
+        <p><button class="btn btn-gold" type="button" id="refAdd" data-i18n="admin.refAdd"></button></p>
+        <p class="fine" id="refMsg" aria-live="polite"></p>
+        <div id="refList"></div>
+      </details>
+      <details class="panel" id="countriesPanel">
+        <summary data-i18n="admin.ctTitle"></summary>
+        <p class="fine" data-i18n="admin.ctHint"></p>
+        <div id="ctList"></div>
+        <h3 data-i18n="admin.ctAdd"></h3>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.ctCode"></label><input class="input" id="ctCode" maxlength="2" dir="ltr" placeholder="GH"></div>
+          <div class="field"><label data-i18n="admin.ctDial"></label><input class="input" id="ctDial" maxlength="4" dir="ltr" inputmode="numeric" placeholder="233"></div>
+          <div class="field"><label data-i18n="admin.ctLen"></label><input class="input" id="ctLen" dir="ltr" placeholder="9"></div>
+          <div class="field"><label data-i18n="admin.ctCurrency"></label><input class="input" id="ctCur" maxlength="3" dir="ltr" placeholder="USD"></div>
+          <div class="field"><label data-i18n="admin.ctLang"></label><select class="input" id="ctLang"><option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option><option value="es">Español</option></select></div>
+          <div class="field"><label data-i18n="admin.ctTz"></label><input class="input" id="ctTz" dir="ltr" list="tzList" placeholder="Africa/Accra"><datalist id="tzList"></datalist></div>
+        </div>
+        <label class="consent-label"><input type="checkbox" id="ctTrunk" checked> <span data-i18n="admin.ctTrunk"></span></label>
+        <p><button class="btn btn-gold" type="button" id="ctSave" data-i18n="admin.ctSave"></button></p>
+        <h3 data-i18n="admin.chTitle"></h3>
+        <p class="fine" data-i18n="admin.chHint"></p>
+        <div class="field"><select class="input" id="chCountry"></select></div>
+        <label class="consent-label"><input type="checkbox" id="chHide"> <span data-i18n="admin.chHideCountry"></span></label>
+        <div id="chCats" class="chips"></div>
+        <p><button class="btn btn-gold" type="button" id="chSave" data-i18n="admin.saveSettings"></button></p>
+        <h3 data-i18n="admin.agTitle"></h3>
+        <p class="fine" data-i18n="admin.agHint"></p>
+        <div id="agList"></div>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.agUser"></label><input class="input" id="agUser" dir="ltr" autocomplete="off" placeholder="agent.ghana"></div>
+          <div class="field"><label data-i18n="admin.agPass"></label><input class="input" id="agPass" dir="ltr" autocomplete="new-password"></div>
+          <div class="field"><label data-i18n="admin.agCountry"></label><select class="input" id="agCountry"></select></div>
+        </div>
+        <p><button class="btn btn-gold" type="button" id="agAdd" data-i18n="admin.agAdd"></button></p>
+        <p class="fine" id="ctMsg" aria-live="polite"></p>
+      </details>
+      <details class="panel" id="mapImportPanel">
+        <summary data-i18n="admin.mapImportTitle"></summary>
+        <p class="fine" data-i18n="admin.mapImportHint"></p>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.importPlace"></label><input class="input" id="importQ" placeholder="زحلة — أو إحداثيات: 33.8466, 35.9031" autocomplete="off" dir="auto"></div>
+          <div class="field"><label data-i18n="admin.importRadius"></label><select class="input" id="importR">
+            <option value="1">1 km</option><option value="3">3 km</option><option value="5" selected>5 km</option><option value="10">10 km</option></select></div>
+        </div>
+        <div class="field"><label data-i18n="admin.importDays"></label><select class="input" id="importDays">
+          <option value="0" data-i18n="admin.importDaysNone"></option><option value="30" data-i18n="admin.importDays30"></option>
+          <option value="90" data-i18n="admin.importDays90"></option><option value="365" data-i18n="admin.importDays365"></option></select></div>
+        <button class="btn btn-gold" type="button" id="importFetch" data-i18n="admin.importFetch"></button>
+        <datalist id="mapTypes">
+          <option value="healthcare.hospital">مستشفى</option><option value="service.vehicle.fuel">محطة وقود / بنزين</option><option value="service.financial.atm">صرّاف آلي</option><option value="healthcare.clinic_or_praxis">عيادة</option><option value="healthcare.dentist">طبيب أسنان</option>
+          <option value="healthcare.pharmacy">صيدلية</option><option value="commercial.elektronics">أدوات كهربائية وإلكترونيات</option>
+          <option value="commercial.clothing">ألبسة</option><option value="commercial.shoes">أحذية</option><option value="commercial.florist">ورود</option>
+          <option value="commercial.furniture_and_interior">مفروشات</option>
+          <option value="commercial.hardware_and_maintenance">أدوات ومعدّات</option><option value="commercial.books">مكتبة</option><option value="commercial.toy_and_game">ألعاب</option>
+          <option value="commercial.pet">حيوانات أليفة</option><option value="service.vehicle.car_wash">غسيل سيارات</option>
+          <option value="service.vehicle.repair">تصليح سيارات</option><option value="accommodation.hotel">فندق</option><option value="catering.cafe">مقهى</option>
+          <option value="catering.restaurant">مطعم</option><option value="commercial.food_and_drink.bakery">فرن</option><option value="commercial.supermarket">سوبرماركت</option>
+          <option value="education.school">مدرسة</option><option value="service.financial.bank">مصرف</option><option value="sport.fitness.fitness_centre">نادٍ رياضي</option>
+        </datalist>
+        <p class="fine" id="importMsg" aria-live="polite"></p>
+        <div id="importResults"></div>
+        <button class="btn btn-gold" type="button" id="importPublish" hidden></button>
+        <h3 data-i18n="admin.regionTitle"></h3>
+        <p class="fine" data-i18n="admin.regionHint"></p>
+        <div class="field"><input class="input" id="regionQ" placeholder="محافظة بيروت"></div>
+        <button class="btn btn-gold" type="button" id="regionFetch" data-i18n="admin.importFetch"></button>
+        <p class="fine" id="regionMsg" aria-live="polite"></p>
+        <div id="regionResults"></div>
+      </details>
+      <details class="panel" id="msgPanel">
+        <summary><span data-i18n="admin.msgTitle"></span> <b class="tab-count" id="msgCount"></b></summary>
+        <div id="msgList"></div>
+      </details>
+      <details class="panel" id="catsPanel">
+        <summary data-i18n="admin.catsTitle"></summary>
+        <p class="fine" data-i18n="admin.catsHint"></p>
+        <div id="catList" class="cat-list"></div>
+        <p><button class="btn btn-ghost" type="button" id="catAdd" data-i18n="admin.catAdd"></button>
+          <button class="btn btn-gold" type="button" id="catSave" data-i18n="admin.catSave"></button></p>
+        <p class="fine" id="catMsg" aria-live="polite"></p>
+      </details>
+      <details class="panel" id="securityPanel">
+        <summary data-i18n="admin.securityTitle"></summary>
+        <p class="fine" data-i18n="admin.securityHint"></p>
+        <h3 data-i18n="admin.passkeysTitle"></h3>
+        <div id="passkeyList"></div>
+        <button class="btn btn-gold" type="button" id="addPasskey" data-i18n="admin.addPasskey"></button>
+        <h3 data-i18n="admin.backupTitle"></h3>
+        <p class="fine" id="backupLeft"></p>
+        <button class="btn btn-ghost" type="button" id="newCodes" data-i18n="admin.newCodes"></button>
+        <pre id="codesBox" class="codes-box" hidden></pre>
+        <h3 data-i18n="admin.requireTitle"></h3>
+        <label class="consent-label"><input type="checkbox" id="mfaToggle"> <span data-i18n="admin.requireLabel"></span></label>
+        <p class="fine" id="secMsg" aria-live="polite"></p>
+        <h3 data-i18n="admin.loginsTitle"></h3>
+        <div id="loginList" class="login-list"></div>
+        <h3 data-i18n="admin.fingerprintTitle"></h3>
+        <p class="fine" data-i18n="admin.fingerprintHint"></p>
+        <p><code dir="ltr" id="fingerprint"></code></p>
+      </details>
+      <details class="panel" id="backupPanel">
+        <summary data-i18n="admin.backupTitle2"></summary>
+        <div class="storage-box">
+          <h3 data-i18n="admin.storageTitle"></h3>
+          <p class="fine" id="storageStatus"></p>
+          <button class="btn btn-gold" type="button" id="storageMove" hidden data-i18n="admin.storageMove"></button>
+        </div>
+        <p class="fine" data-i18n="admin.backupHint"></p>
+        <a class="btn btn-gold" href="/api/admin/backup" id="backupLink" data-i18n="admin.backupDownload"></a>
+        <p class="label mt1" data-i18n="admin.restoreLabel"></p>
+        <input class="sr-only" type="file" id="restoreFile" accept=".zip,application/zip">
+        <label class="btn btn-ghost" for="restoreFile">⬆️ ZIP</label>
+        <p class="fine" id="restoreMsg" aria-live="polite"></p>
+      </details>
+      <details class="panel" id="settingsPanel">
+        <summary data-i18n="admin.settingsTitle"></summary>
+        <p class="fine" data-i18n="admin.settingsHint"></p>
+        <form id="settingsForm">
+          <div class="grid2">
+            <div class="field"><label data-i18n="admin.brandName"></label><input class="input" name="brandName" maxlength="40"></div>
+            <div class="field"><label data-i18n="admin.brandNameEn"></label><input class="input" name="brandNameEn" maxlength="40" dir="ltr"></div>
+          </div>
+          <div class="field"><label data-i18n="admin.announcement"></label><textarea class="input" name="announcement" maxlength="300" rows="2"></textarea></div>
+          <div class="field"><label data-i18n="admin.adminWhatsappField"></label><input class="input" name="adminWhatsapp" type="tel" dir="ltr" maxlength="25"></div>
+          <div class="field"><span class="label" data-i18n="admin.sectionsTitle"></span>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="sec_dailyCounters"><span data-i18n="admin.secDailyCounters"></span></label>
+              <label class="chip"><input type="checkbox" name="sec_nearby"><span data-i18n="admin.secNearby"></span></label>
+              <label class="chip"><input type="checkbox" name="sec_regions"><span data-i18n="admin.secRegions"></span></label>
+              <label class="chip"><input type="checkbox" name="sec_dishes"><span data-i18n="admin.secDishes"></span></label>
+              <label class="chip"><input type="checkbox" name="sec_nameSearch"><span data-i18n="admin.secNameSearch"></span></label>
+              <label class="chip"><input type="checkbox" name="sec_cooksSlider"><span data-i18n="admin.secCooksSlider"></span></label>
+              <label class="chip"><input type="checkbox" name="sec_restaurants"><span data-i18n="admin.secRestaurants"></span></label>
+              <label class="chip"><input type="checkbox" name="sec_globalCounters"><span data-i18n="admin.secGlobalCounters"></span></label>
+            </div>
+          </div>
+          <h3 data-i18n="admin.appLinksTitle"></h3>
+          <p class="fine" data-i18n="admin.appLinksHint"></p>
+          <div class="field"><label data-i18n="admin.appAndroid"></label><input class="input" name="appAndroid" type="url" dir="ltr" placeholder="https://"></div>
+          <div class="field"><label data-i18n="admin.appIos"></label><input class="input" name="appIos" type="url" dir="ltr" placeholder="https://apps.apple.com/…"></div>
+          <h3 data-i18n="admin.adPricesTitle"></h3>
+          <p class="fine" data-i18n="admin.adPricesHint"></p>
+          <div class="price-table">
+            <span data-i18n="ads.week"></span><input class="input" name="adWeekUsd" type="number" min="0" step="0.01" dir="ltr" placeholder="USD"><input class="input" name="adWeekEur" type="number" min="0" step="0.01" dir="ltr" placeholder="EUR">
+            <span data-i18n="ads.month"></span><input class="input" name="adMonthUsd" type="number" min="0" step="0.01" dir="ltr" placeholder="USD"><input class="input" name="adMonthEur" type="number" min="0" step="0.01" dir="ltr" placeholder="EUR">
+          </div>
+          <h3 data-i18n="admin.bookingTitle"></h3>
+          <label class="consent-label"><input type="checkbox" id="bkEnabled"> <span data-i18n="admin.bookingEnabled"></span></label>
+          <p class="fine" data-i18n="admin.bookingHint"></p>
+          <div id="bkPrices" class="grid2"></div>
+          <h3 data-i18n="admin.groupsTitle"></h3>
+          <p class="fine" data-i18n="admin.groupsHint"></p>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" data-groupshow="shops"><span>🏪 <span data-i18n="home.tab_shops"></span></span></label>
+            <label class="chip"><input type="checkbox" data-groupshow="crafts"><span>🛠️ <span data-i18n="home.tab_crafts"></span></span></label>
+          </div>
+          <h3 data-i18n="admin.plansShownTitle"></h3>
+          <p class="fine" data-i18n="admin.plansShownHint"></p>
+          <div class="chips" id="plansShown">
+            <label class="chip"><input type="checkbox" data-planshow="monthly"><span data-i18n="plans.monthly"></span></label>
+            <label class="chip"><input type="checkbox" data-planshow="quarterly"><span data-i18n="plans.quarterly"></span></label>
+            <label class="chip"><input type="checkbox" data-planshow="semiannual"><span data-i18n="plans.semiannual"></span></label>
+            <label class="chip"><input type="checkbox" data-planshow="yearly"><span data-i18n="plans.yearly"></span></label>
+          </div>
+          <h3 data-i18n="admin.pricesTitle"></h3>
+          <p class="fine" data-i18n="admin.pricesHint"></p>
+          <div id="pricesGrid"></div>
+          <h3 data-i18n="admin.trialTitle"></h3>
+          <div class="grid2" id="trialGrid"></div>
+          <h3 data-i18n="admin.limitsTitle"></h3>
+          <div class="grid2">
+            <div class="field"><label data-i18n="admin.limitCookPhotos"></label><input class="input" name="lim_cookPhotos" type="number" min="1" max="1000" dir="ltr"></div>
+            <div class="field"><label data-i18n="admin.limitRestaurantPhotos"></label><input class="input" name="lim_restaurantPhotos" type="number" min="1" max="1000" dir="ltr"></div>
+            <div class="field"><label data-i18n="admin.limitMenuItems"></label><input class="input" name="lim_menuItems" type="number" min="1" max="1000" dir="ltr"></div>
+          </div>
+          <button class="btn btn-gold" type="submit" data-i18n="admin.saveSettings"></button>
+          <p class="fine" id="settingsMsg" aria-live="polite"></p>
+        </form>
+      </details>
+      <details class="panel" id="waPanel">
+        <summary data-i18n="admin.waTitle"></summary>
+        <p class="fine" data-i18n="admin.waHint"></p>
+        <div class="field"><label data-i18n="admin.textsLang"></label><select class="input" id="waLang"></select></div>
+        <div id="waList" class="texts-list"></div>
+      </details>
+      <details class="panel" id="designPanel">
+        <summary data-i18n="admin.designTitle"></summary>
+        <p class="fine" data-i18n="admin.designHint"></p>
+        <div id="colorList" class="grid2"></div>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.fontScale"></label><select class="input" id="fontScale">
+            <option value="0.9" data-i18n="admin.font09"></option><option value="1" data-i18n="admin.font10"></option>
+            <option value="1.1" data-i18n="admin.font11"></option><option value="1.2" data-i18n="admin.font12"></option></select></div>
+          <div class="field"><label data-i18n="admin.layoutCooks"></label><select class="input" id="layoutCooks">
+            <option value="slider" data-i18n="admin.layoutSlider"></option><option value="grid" data-i18n="admin.layoutGrid"></option><option value="list" data-i18n="admin.layoutList"></option></select></div>
+          <div class="field"><label data-i18n="admin.layoutRestaurants"></label><select class="input" id="layoutRestaurants">
+            <option value="slider" data-i18n="admin.layoutSlider"></option><option value="grid" data-i18n="admin.layoutGrid"></option><option value="list" data-i18n="admin.layoutList"></option></select></div>
+        </div>
+        <h3 data-i18n="admin.sizesTitle"></h3>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.sizes_dishes"></label><select class="input" data-size="dishes"><option value="xs" data-i18n="admin.size_xs"></option><option value="s" data-i18n="admin.size_s"></option><option value="m" data-i18n="admin.size_m"></option><option value="l" data-i18n="admin.size_l"></option></select></div>
+          <div class="field"><label data-i18n="admin.sizes_restaurants"></label><select class="input" data-size="restaurants"><option value="xs" data-i18n="admin.size_xs"></option><option value="s" data-i18n="admin.size_s"></option><option value="m" data-i18n="admin.size_m"></option><option value="l" data-i18n="admin.size_l"></option></select></div>
+          <div class="field"><label data-i18n="admin.sizes_cooks"></label><select class="input" data-size="cooks"><option value="xs" data-i18n="admin.size_xs"></option><option value="s" data-i18n="admin.size_s"></option><option value="m" data-i18n="admin.size_m"></option><option value="l" data-i18n="admin.size_l"></option></select></div>
+          <div class="field"><label data-i18n="admin.sizes_dishFeed"></label><select class="input" data-size="dishFeed"><option value="xs" data-i18n="admin.size_xs"></option><option value="s" data-i18n="admin.size_s"></option><option value="m" data-i18n="admin.size_m"></option><option value="l" data-i18n="admin.size_l"></option></select></div>
+          <div class="field"><label data-i18n="admin.sizes_gallery"></label><select class="input" data-size="gallery"><option value="xs" data-i18n="admin.size_xs"></option><option value="s" data-i18n="admin.size_s"></option><option value="m" data-i18n="admin.size_m"></option><option value="l" data-i18n="admin.size_l"></option></select></div>
+        </div>
+        <h3 data-i18n="admin.uiTitle"></h3>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.uiBtnShape"></label><select class="input" id="uiBtnShape"><option value="" data-i18n="admin.colorDefault"></option><option value="square" data-i18n="admin.shapeSquare"></option><option value="rounded" data-i18n="admin.shapeRounded"></option><option value="pill" data-i18n="admin.shapePill"></option></select></div>
+          <div class="field"><label data-i18n="admin.uiFieldShape"></label><select class="input" id="uiFieldShape"><option value="" data-i18n="admin.colorDefault"></option><option value="square" data-i18n="admin.shapeSquare"></option><option value="rounded" data-i18n="admin.shapeRounded"></option><option value="pill" data-i18n="admin.shapePill"></option></select></div>
+          <div class="field"><label data-i18n="admin.uiBtnBg"></label><input type="color" id="uiBtnBg"> <button class="btn-text" type="button" data-uireset="uiBtnBg" data-i18n="admin.colorDefault"></button></div>
+          <div class="field"><label data-i18n="admin.uiBtnText"></label><input type="color" id="uiBtnText"> <button class="btn-text" type="button" data-uireset="uiBtnText" data-i18n="admin.colorDefault"></button></div>
+          <div class="field"><label data-i18n="admin.uiFieldBg"></label><input type="color" id="uiFieldBg"> <button class="btn-text" type="button" data-uireset="uiFieldBg" data-i18n="admin.colorDefault"></button></div>
+          <div class="field"><label data-i18n="admin.uiFieldText"></label><input type="color" id="uiFieldText"> <button class="btn-text" type="button" data-uireset="uiFieldText" data-i18n="admin.colorDefault"></button></div>
+          <div class="field"><label data-i18n="admin.uiFieldBorder"></label><input type="color" id="uiFieldBorder"> <button class="btn-text" type="button" data-uireset="uiFieldBorder" data-i18n="admin.colorDefault"></button></div>
+        </div>
+        <h3 data-i18n="admin.menuTitle"></h3>
+        <p class="fine" data-i18n="admin.menuHint"></p>
+        <div id="menuItems" class="chips"></div>
+        <button class="btn btn-gold" type="button" id="designSave" data-i18n="admin.designSave"></button>
+        <h3 data-i18n="admin.logoTitle"></h3>
+        <p class="fine" data-i18n="admin.galleryHint"></p>
+        <div class="gallery-grid" id="logoGallery"></div>
+        <input class="sr-only" type="file" id="logoUpload" accept="image/*">
+        <label class="btn btn-ghost" for="logoUpload" data-i18n="admin.logoUpload"></label>
+        <h3 data-i18n="admin.bgTitle"></h3>
+        <div class="gallery-grid bg" id="bgGallery"></div>
+        <input class="sr-only" type="file" id="bgUpload" accept="image/*">
+        <label class="btn btn-ghost" for="bgUpload" data-i18n="admin.bgUpload"></label>
+        <div hidden><img id="logoPreview" alt=""><input type="file" id="logoFile"><button type="button" id="logoReset"></button></div>
+        <p class="fine" id="designMsg" aria-live="polite"></p>
+      </details>
+      <details class="panel" id="textsPanel">
+        <summary data-i18n="admin.textsTitle"></summary>
+        <p class="fine" data-i18n="admin.textsHint"></p>
+        <div class="grid2">
+          <div class="field"><label data-i18n="admin.textsLang"></label><select class="input" id="textsLang"></select></div>
+          <div class="field"><label>&nbsp;</label><input class="input" id="textsQ" type="search" data-i18n-placeholder="admin.textsSearch"></div>
+        </div>
+        <p class="notice" id="textsSeen"></p>
+        <label class="consent-label"><input type="checkbox" id="textsAll"> <span data-i18n="admin.textsAll"></span></label>
+        <label class="chip"><input type="checkbox" id="textsTranslate" checked><span data-i18n="admin.textsTranslate"></span></label>
+        <div id="textsList" class="texts-list"></div>
+      </details>
+      <details class="panel" id="bannersPanel">
+        <summary data-i18n="admin.bannersTitle"></summary>
+        <p class="fine" data-i18n="admin.bannersHint"></p>
+        <form id="bannerForm">
+          <div class="grid2">
+            <div class="field"><label data-i18n="admin.bannerPlacement"></label><select class="input" name="placement" id="bannerPlacement"></select></div>
+            <div class="field"><label data-i18n="admin.bannerTitle"></label><input class="input" name="title" maxlength="80"></div>
+          </div>
+          <div class="field"><label data-i18n="admin.bannerLink"></label><input class="input" name="linkUrl" maxlength="300" dir="ltr" placeholder="https://"></div>
+          <div class="field"><label data-i18n="admin.bannerExpires"></label><input class="input" name="expiresAt" type="date" dir="ltr"></div>
+          <input class="sr-only" type="file" id="bannerFile" accept="image/*">
+          <label class="btn btn-ghost" for="bannerFile" data-i18n="admin.bannerAdd"></label>
+          <img id="bannerPreview" class="banner-preview" alt="" hidden>
+          <button class="btn btn-gold" type="button" id="bannerSave" hidden data-i18n="admin.saveSettings"></button>
+          <p class="fine" id="bannerMsg" aria-live="polite"></p>
+        </form>
+        <div id="bannerList" class="banner-admin-list"></div>
+      </details>
+      <details class="panel" id="importPanel">
+        <summary data-i18n="admin.townsTitle"></summary>
+        <p class="fine" data-i18n="admin.townsHint"></p>
+        <p class="fine" id="importStatus"></p>
+        <div class="field"><label data-i18n="admin.importCountry"></label><select class="input" id="importCountry"></select></div>
+        <button class="btn btn-gold" type="button" id="importBtn" data-i18n="admin.importBtn"></button>
+      </details>
+      <details class="panel" id="areaPanel">
+        <summary data-i18n="admin.addArea"></summary>
+        <form id="areaForm" class="grid2">
+          <div class="field"><label data-i18n="admin.nameAr"></label><input class="input" name="nameAr" required maxlength="60"></div>
+          <div class="field"><label data-i18n="admin.district"></label><select class="input" name="district" id="districtSel"></select></div>
+          <div class="field"><label data-i18n="admin.lat"></label><input class="input" name="lat" type="number" step="0.0001" dir="ltr"></div>
+          <div class="field"><label data-i18n="admin.lng"></label><input class="input" name="lng" type="number" step="0.0001" dir="ltr"></div>
+          <button class="btn btn-ghost" type="submit" data-i18n="admin.addArea"></button>
+          <p class="fine" id="areaMsg"></p>
+        </form>
+      </details>
+    </section>
+  </main>
+
+  <dialog id="dlg">
+    <div class="dlg-inner">
+      <div class="dlg-head"><h2 class="title" id="dlgTitle"></h2><button class="btn-text" id="dlgClose" type="button" data-i18n="common.close">إغلاق</button></div>
+      <div id="dlgMsg" class="alert" role="status" hidden></div>
+      <div id="dlgBody"></div>
+    </div>
+  </dialog>
+  <template id="cookFormTpl">
+    <form class="cook-form" novalidate>
+      <div class="grid2">
+        <div class="field"><label data-i18n="join.fullName"></label><input class="input" name="fullName" maxlength="80" required></div>
+        <div class="field"><label data-i18n="join.whatsapp"></label><input class="input" name="whatsapp" dir="ltr" maxlength="25" required></div>
+      </div>
+      <div class="field"><label data-i18n="admin.placeSearch"></label><input class="input" name="placeSearch" type="search" autocomplete="off">
+        <span class="hint" data-i18n="admin.placeSearchHint"></span><div class="place-results" data-place-results></div><p class="picked" data-place-picked></p></div>
+      <div class="field"><label data-i18n="join.area"></label><input class="input" name="areaSearch" type="search" data-i18n-placeholder="location.searchPlaceholder"><p class="picked" data-home></p></div>
+      <div class="field"><span class="label" data-i18n="admin.servedTitle"></span><div data-served></div></div>
+      <div class="grid2">
+        <div class="field"><label data-i18n="admin.lat"></label><input class="input" name="lat" type="number" step="0.0001" dir="ltr"></div>
+        <div class="field"><label data-i18n="admin.lng"></label><input class="input" name="lng" type="number" step="0.0001" dir="ltr"></div>
+      </div>
+      <span class="hint" data-i18n="admin.latHint"></span>
+      <div class="field" data-specialty-field hidden><label data-i18n="admin.specialty"></label><input class="input" name="specialty" maxlength="120"></div>
+      <div class="field" data-services-field><span class="label" data-i18n="join.services"></span><div class="chips" data-services></div></div>
+      <div class="field"><label data-i18n="join.bio"></label><textarea class="input" name="bio" maxlength="300"></textarea></div>
+      <div class="field"><label data-i18n="admin.notes"></label><textarea class="input" name="adminNotes" maxlength="1000"></textarea></div>
+      <div class="field" data-photo-field hidden><span class="label" data-i18n="admin.photo"></span><div class="photo-pick"><img class="avatar" data-photo alt=""><button class="btn-text" type="button" data-photo-remove data-i18n="join.photoRemove"></button></div></div>
+      <div data-activate-block hidden>
+        <label class="check"><input type="checkbox" name="activateNow"> <span data-i18n="admin.activateNow"></span></label>
+      </div>
+      <button class="btn btn-gold" type="submit" data-submit></button>
+    </form>
+  </template>
+</body>
+</html>

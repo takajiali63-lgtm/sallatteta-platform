@@ -1,0 +1,37 @@
+/* Admin panel: same look as the app (colours come from the chosen design), side menu ☰, one section at a time */
+body{font-family:"Tajawal",system-ui,"Segoe UI",Tahoma,sans-serif}
+.shell.admin{max-width:1000px}
+.as-bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:10px 0 12px;background:var(--bg);border-bottom:1px solid var(--line,rgba(127,127,127,.2));margin-bottom:14px}
+.as-bar b{font-size:1.05rem}
+.as-burger{width:44px;height:44px;border-radius:14px;border:1px solid var(--line,rgba(127,127,127,.25));background:var(--surface,#f6f7f9);color:var(--text,inherit);font-size:22px;cursor:pointer}
+.as-nav{position:fixed;top:0;bottom:0;inset-inline-start:0;width:min(86vw,320px);z-index:60;background:var(--surface,#fff);color:var(--text,inherit);
+  transform:translateX(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);overflow-y:auto;padding:14px 12px 40px;box-shadow:0 0 40px rgba(0,0,0,.35)}
+[dir="rtl"] .as-nav{transform:translateX(105%)}
+[dir="ltr"] .as-nav{transform:translateX(-105%)}
+body.as-open .as-nav{transform:none}
+.as-shade{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:55;opacity:0;pointer-events:none;transition:opacity .2s}
+body.as-open .as-shade{opacity:1;pointer-events:auto}
+.as-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.as-x{border:0;background:none;color:inherit;font-size:20px;cursor:pointer}
+.as-group{margin:12px 0}
+.as-group small{display:block;color:var(--muted,#888);font-size:.75rem;margin:0 6px 6px;letter-spacing:.02em}
+.as-group button{display:flex;align-items:center;gap:10px;width:100%;text-align:start;border:0;background:none;color:inherit;padding:11px 10px;border-radius:12px;font:inherit;font-size:.95rem;cursor:pointer}
+.as-group button span{width:28px;text-align:center}
+.as-group button:hover{background:rgba(127,127,127,.12)}
+.as-group button.on{background:var(--gold,#0E9F7E);color:var(--bg,#fff);font-weight:700}
+.as-panel{border:1px solid var(--line,rgba(127,127,127,.2));border-radius:18px;padding:16px;background:var(--surface,transparent)}
+.as-panel>summary{display:none}
+.as-sec[hidden]{display:none!important}
+.admin-list>li,.panel{border-radius:16px}
+.dx .wrap{padding:0;min-height:0}
+.designs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.design{display:flex;flex-direction:column;gap:6px;text-align:start;cursor:pointer;color:inherit}
+.design .swatch{display:flex;gap:4px;height:34px}
+.design .swatch i{flex:1;border-radius:8px;border:1px solid rgba(127,127,127,.25)}
+.branchc{margin-inline-start:18px;border-style:dashed}
+@media (prefers-reduced-motion:reduce){.as-nav,.as-shade{transition:none}}
+.price-in{max-width:110px}
+/* a country agent: only the subscribers of his country and his referral links (the server refuses the rest anyway) */
+body.agent-mode #asNav [data-go]:not([data-go="main"]):not([data-go="refPanel"]){display:none}
+body.agent-mode #asNav .as-group small{display:none}
+.mt1{margin-top:1rem}

@@ -1,0 +1,27 @@
+# Full platform on one machine (app + database), e.g. a private server:
+#   docker compose up -d     → http://localhost:3000   (admin: /admin)
+# Then open the admin panel → "Backup & move" → upload your backup to restore everything.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: aklatak
+      POSTGRES_USER: aklatak
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD}
+    volumes: [dbdata:/var/lib/postgresql/data]
+    restart: unless-stopped
+  app:
+    build: .
+    depends_on: [db]
+    ports: ["3000:3000"]
+    environment:
+      DATABASE_URL: postgres://aklatak:${DB_PASSWORD}@db:5432/aklatak
+      DATABASE_SSL: "false"
+      SESSION_SECRET: ${SESSION_SECRET:?set SESSION_SECRET}
+      ADMIN_WHATSAPP_NUMBER: ${ADMIN_WHATSAPP_NUMBER:-}
+      ADMIN_BOOTSTRAP_USERNAME: ${ADMIN_BOOTSTRAP_USERNAME:-admin}
+      ADMIN_BOOTSTRAP_PASSWORD: ${ADMIN_BOOTSTRAP_PASSWORD:-}
+      TRUST_PROXY: ${TRUST_PROXY:-0}
+    restart: unless-stopped
+volumes:
+  dbdata:

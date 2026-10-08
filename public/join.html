@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#121212">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Aklatak">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <script src="/assets/sw-register.js" defer></script>
+  <meta name="color-scheme" content="dark only">
+  <title data-i18n-title="join.title">انضمّ إلى Aklatak</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Pacifico&family=Readex+Pro:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="/assets/styles.css?v=610">
+  <link rel="stylesheet" href="/theme.css">
+  <script type="module" src="/assets/join.js?v=770"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div class="masthead-start">
+        <button class="nav-back" type="button" data-back  data-i18n-aria="nav.back" data-i18n-tip="nav.back" aria-label="رجوع" title="رجوع"><span aria-hidden="true">→</span></button>
+        <a class="wordmark" href="/"><img class="logo-mark" src="/assets/logo.svg" alt="" width="30" height="30"><b data-i18n="brand.name">Aklatak</b></a>
+      </div>
+      <a class="nav-login" href="/account" data-i18n="nav.cookLogin">تسجيل الدخول</a>
+    </header>
+
+    <div class="banners" data-banners="join_top" hidden></div>
+    <section id="chooseView" hidden>
+      <h1 class="display" data-i18n="join.title">انضمّ إلى Aklatak</h1>
+      <p class="lead" data-i18n="join.chooseTitle">كيف تريد الاشتراك؟</p>
+      <div class="choose-kind">
+        <button class="kind-card" type="button" data-kind="cook"><b data-i18n="join.asCook">طبّاخ منزلي</b><span data-i18n="join.asCookHint"></span><span class="trial-note" data-trial="cook"></span></button>
+        <button class="kind-card" type="button" data-kind="restaurant"><b data-i18n="join.asRestaurant">مطعم</b><span data-i18n="join.asRestaurantHint"></span><span class="trial-note" data-trial="restaurant"></span></button>
+      </div>
+      <p class="fine"><span data-i18n="join.haveAccount"></span> <a href="/account" data-i18n="join.loginLink"></a></p>
+    </section>
+
+    <section id="formView">
+      <h1 class="display" id="formTitle">انضمّ إلى Aklatak</h1>
+      <p class="lead" id="formLead" data-i18n="join.lead"></p>
+      <p class="fine" hidden><button class="btn-text" type="button" id="changeType" data-i18n="join.changeType"></button></p>
+      <div id="formError" class="alert" role="alert" hidden></div>
+      <form id="joinForm" novalidate>
+        <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+        <div class="field">
+          <label for="kindSelect" data-i18n="join.kind">نوع النشاط</label>
+          <select class="input" id="kindSelect" required></select>
+          <p class="fine" id="kindTrial"></p>
+          <span class="err" data-err="kind" hidden></span>
+        </div>
+        <div class="field">
+          <label for="fullName" id="fullNameLabel" data-i18n="join.fullName">الاسم الكامل</label>
+          <input class="input" id="fullName" name="fullName" autocomplete="name" maxlength="80" required>
+          <span class="err" data-err="fullName" hidden></span>
+        </div>
+        <div class="field">
+          <label for="password" data-i18n="join.password">كلمة السر</label>
+          <span class="input-with-btn"><input class="input" id="password" name="password" type="password" autocomplete="new-password" minlength="5" maxlength="100" dir="ltr" required><button class="kbd-toggle" type="button" id="showPw" data-i18n="join.showPassword">إظهار</button></span>
+          <p class="hint" data-i18n="join.passwordHint"></p>
+          <span class="err" data-err="password" hidden></span>
+        </div>
+        <div class="field">
+          <label for="whatsapp" data-i18n="join.whatsapp">رقم WhatsApp</label>
+          <input class="input" id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" maxlength="25" required>
+          <span class="hint" id="whatsappHint"></span>
+          <span class="err" data-err="whatsapp" hidden></span>
+          <label class="consent-label" id="noNumberField" hidden><input type="checkbox" id="noNumber"> <span data-i18n="join.noNumber"></span></label>
+          <p class="fine" id="noNumberNote" hidden data-i18n="join.noNumberNote"></p>
+        </div>
+        <div class="field">
+          <span class="label" data-i18n="join.location">موقع مطبخك (إجباري)</span>
+          <div class="why-box">
+            <p class="why-title" data-i18n="join.whyTitle"></p>
+            <ul class="why-list"><li data-i18n="join.why1"></li><li data-i18n="join.why2"></li><li data-i18n="join.why3"></li></ul>
+          </div>
+          <p class="hint" data-i18n="join.locationHint"></p>
+          <button class="btn btn-gold" type="button" id="gpsBtn" data-i18n="join.useGps">حدّد موقعي</button>
+          <p class="gps-status" id="gpsStatus" aria-live="polite"></p>
+          <p class="gps-accuracy" id="gpsAccuracy" hidden></p>
+          <span class="err" data-err="location" hidden></span>
+        </div>
+        <div class="field">
+          <span class="label" data-i18n="join.served">البلدات التي توصل إليها</span>
+          <div id="servedEditor"></div>
+          <span class="err" data-err="servedAreaIds" hidden></span>
+        </div>
+        <div class="field">
+          <label for="homeArea" data-i18n="join.area">البلدة أو المنطقة (اختياري)</label>
+          <input class="input" id="homeArea" maxlength="80" data-i18n-placeholder="join.areaPlaceholder">
+        </div>
+        <div class="field" hidden>
+          <div id="specialtyField" hidden>
+            <label for="specialty" data-i18n="join.specialty">الاختصاص</label>
+            <input class="input" id="specialty" name="specialty" maxlength="120">
+            <span class="hint" data-i18n="join.specialtyHint"></span>
+            <span class="err" data-err="specialty" hidden></span>
+          </div>
+          <span class="label" id="servicesLabel" data-i18n="join.services">ماذا تحضّر؟</span>
+          <div class="chips" id="serviceChips"></div>
+          <span class="err" data-err="services" hidden></span>
+        </div>
+        <fieldset class="field hours-box" id="joinHours"><legend><span data-i18n="hours.titleRequired"></span></legend>
+          <label class="consent-label"><input type="checkbox" id="jAllDay"> <span data-i18n="hours.allDay"></span></label>
+          <div class="grid2" id="jTimes"><div class="field"><label data-i18n="hours.open"></label><input class="input" type="time" id="jOpen"></div>
+          <div class="field"><label data-i18n="hours.close"></label><input class="input" type="time" id="jClose"></div></div>
+          <p class="fine" data-i18n="hours.closedDays"></p><div class="chips"><label class="chip"><input type="checkbox" data-jclosed="0"><span data-i18n="hours.d0"></span></label><label class="chip"><input type="checkbox" data-jclosed="1"><span data-i18n="hours.d1"></span></label><label class="chip"><input type="checkbox" data-jclosed="2"><span data-i18n="hours.d2"></span></label><label class="chip"><input type="checkbox" data-jclosed="3"><span data-i18n="hours.d3"></span></label><label class="chip"><input type="checkbox" data-jclosed="4"><span data-i18n="hours.d4"></span></label><label class="chip"><input type="checkbox" data-jclosed="5"><span data-i18n="hours.d5"></span></label><label class="chip"><input type="checkbox" data-jclosed="6"><span data-i18n="hours.d6"></span></label></div>
+          <span class="err" data-err="hours" hidden></span></fieldset>
+        <label class="consent-label" id="jBookingField" hidden><input type="checkbox" id="jBooking"> <span id="jBookingLabel"></span></label>
+        <div class="field">
+          <label for="bio" data-i18n="join.bio">نبذة قصيرة</label>
+          <textarea class="input" id="bio" name="bio" maxlength="300" data-i18n-placeholder="join.bioPlaceholder"></textarea>
+          <span class="err" data-err="bio" hidden></span>
+        </div>
+        <div class="field">
+          <span class="label" data-i18n="join.photo">صورة (اختياري)</span>
+          <div class="photo-pick">
+            <span class="avatar" id="photoPreview" aria-hidden="true">+</span>
+            <div>
+              <input class="sr-only" type="file" id="photoInput" accept="image/*"><label class="btn btn-ghost photo-btn" for="photoInput" data-i18n="join.photoPick">اختيار صورة</label>
+              <span class="hint" data-i18n="join.photoHint"></span>
+              <button class="btn-text" type="button" id="photoRemove" hidden data-i18n="join.photoRemove"></button>
+            </div>
+          </div>
+          <span class="err" data-err="photo" hidden></span>
+        </div>
+        <div class="field">
+          <span class="label" data-i18n="join.plan">مدة الاشتراك</span>
+          <div class="chips" id="planChips" role="radiogroup"></div>
+          <div class="field" id="drvPlan" hidden><span class="label" id="drvPlanTitle"></span><div class="chips" id="drvPlanChips" role="radiogroup"></div><span class="hint" id="drvPlanHint"></span></div>
+          <span class="err" data-err="plan" hidden></span>
+        </div>
+        <div class="field consent">
+          <label class="consent-label"><input type="checkbox" id="acceptTerms"> <span id="consentText"></span></label>
+          <span class="err" data-err="acceptTerms" hidden></span>
+        </div>
+        <div class="btn-row"><button class="btn btn-gold" type="submit" id="submitBtn" data-i18n="join.submit">إرسال طلب الاشتراك</button></div>
+        <p class="fine" data-i18n="join.note"></p>
+        <p class="fine"><span data-i18n="join.haveAccount"></span> <a href="/account" data-i18n="join.loginLink"></a></p>
+      </form>
+    </section>
+
+    <section id="doneView" hidden>
+      <h1 class="display" data-i18n="join.doneTitle">وصل طلبك</h1>
+      <p class="lead" id="doneText"></p>
+      <div class="btn-row">
+        <a class="btn btn-wa" id="adminWa" href="#" hidden data-i18n="join.sendToAdmin"></a>
+        <a class="btn btn-ghost" href="/" data-i18n="join.backHome"></a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

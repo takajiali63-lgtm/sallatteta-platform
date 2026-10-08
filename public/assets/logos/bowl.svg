@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Aklatak">
+  <g fill="none" stroke="#d4af37" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 33h50c0 12-11 20-25 20S7 45 7 33z" fill="#d4af37" fill-opacity="0.18"/>
+    <path d="M22 58h20"/>
+    <path d="M22 26c-4-4 3-7-1-12"/>
+    <path d="M32 26c-4-5 4-8 0-15"/>
+    <path d="M42 26c-4-4 3-7-1-12"/>
+  </g>
+</svg>

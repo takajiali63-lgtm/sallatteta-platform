@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="260" viewBox="0 0 420 260">
+  <defs>
+    <radialGradient id="ember" cx="50%" cy="85%" r="60%">
+      <stop offset="0" stop-color="#ff8a3d" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#c2410c" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#121212" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="420" height="260" fill="url(#ember)"/>
+  <g fill="none" stroke="#e0a84a" stroke-opacity="0.38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- skewers -->
+    <g><path d="M40 92h340"/><rect x="92" y="78" width="30" height="28" rx="9"/><rect x="130" y="80" width="26" height="24" rx="6"/><rect x="164" y="78" width="30" height="28" rx="9"/><rect x="202" y="80" width="26" height="24" rx="6"/><rect x="236" y="78" width="30" height="28" rx="9"/><circle cx="386" cy="92" r="6"/></g>
+    <g><path d="M60 134h320"/><circle cx="120" cy="134" r="14"/><circle cx="154" cy="134" r="12"/><circle cx="188" cy="134" r="14"/><circle cx="222" cy="134" r="12"/><circle cx="256" cy="134" r="14"/><circle cx="386" cy="134" r="6"/></g>
+    <!-- grate -->
+    <path d="M70 160h280" stroke-opacity="0.5"/>
+    <path d="M90 160v12M130 160v12M170 160v12M210 160v12M250 160v12M290 160v12M330 160v12" stroke-opacity="0.3"/>
+    <rect x="60" y="172" width="300" height="22" rx="5" stroke-opacity="0.3"/>
+  </g>
+  <!-- flames -->
+  <g fill="none" stroke="#ff9a4d" stroke-opacity="0.45" stroke-width="2.6" stroke-linecap="round">
+    <path d="M120 170c-10-12 8-18 0-30"/><path d="M170 170c-12-14 10-22 0-36"/><path d="M220 170c-10-12 8-18 0-30"/><path d="M270 170c-12-14 10-22 0-36"/><path d="M315 170c-8-10 6-15 0-24"/>
+  </g>
+  <!-- sparks -->
+  <g fill="#ffb366" fill-opacity="0.55"><circle cx="150" cy="60" r="2"/><circle cx="240" cy="44" r="1.6"/><circle cx="300" cy="66" r="2.2"/><circle cx="196" cy="30" r="1.4"/><circle cx="110" cy="40" r="1.4"/></g>
+</svg>

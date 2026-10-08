@@ -1,0 +1,22 @@
+{
+  "name": "sallatteta-platform",
+  "version": "7.7.0",
+  "private": true,
+  "description": "Aklatak — منصة تربط الزبائن بالطبّاخين المنزليين القريبين عبر WhatsApp",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --env-file-if-exists=.env src/server.js",
+    "migrate": "node --env-file-if-exists=.env scripts/migrate.js",
+    "create-admin": "node --env-file-if-exists=.env scripts/create-admin.js",
+    "seed:demo": "node --env-file-if-exists=.env scripts/seed-demo.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "worker": "node scripts/worker.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

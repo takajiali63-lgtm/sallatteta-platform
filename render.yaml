@@ -1,0 +1,39 @@
+# Render Blueprint — سلة تيتا (منصة مستقلة، لا علاقة لها بمتجر Shopify)
+# Dashboard → New → Blueprint → اختاري الـ repo. سيُطلب منك إدخال قيم sync:false.
+services:
+  - type: web
+    name: sallatteta-platform
+    runtime: node
+    plan: starter            # "free" ممكن للتجربة، لكنه ينام بعد 15 دقيقة (أول فتح يأخذ ~50 ثانية)
+    region: frankfurt        # الأقرب إلى لبنان
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sallatteta-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_WHATSAPP_NUMBER
+        sync: false
+      - key: ADMIN_PATH
+        value: /admin
+      - key: ADMIN_BOOTSTRAP_USERNAME
+        sync: false
+      - key: ADMIN_BOOTSTRAP_PASSWORD
+        sync: false
+      - key: DEFAULT_COUNTRY_CODE
+        value: "961"
+
+databases:
+  - name: sallatteta-db
+    plan: basic-256mb        # حسابك فيه قاعدة مجانية مستعملة أصلاً (lteze)، وRender يسمح بقاعدة مجانية واحدة فقط
+    region: frankfurt
+    databaseName: sallatteta
+    user: sallatteta

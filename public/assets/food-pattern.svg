@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g fill="none" stroke="#d4af37" stroke-opacity="0.075" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- skewer (shish kebab) -->
+    <g transform="translate(22 30) rotate(-28 50 30)">
+      <path d="M0 30h108"/><circle cx="104" cy="30" r="3"/>
+      <rect x="14" y="20" width="16" height="20" rx="6"/><rect x="34" y="21" width="14" height="18" rx="4"/>
+      <rect x="52" y="20" width="16" height="20" rx="6"/><rect x="72" y="21" width="14" height="18" rx="4"/>
+    </g>
+    <!-- grill with flames -->
+    <g transform="translate(186 20)">
+      <rect x="0" y="20" width="100" height="14" rx="3"/>
+      <path d="M12 20v14M28 20v14M44 20v14M60 20v14M76 20v14M90 20v14"/>
+      <path d="M8 34l-6 30M92 34l6 30"/>
+      <path d="M30 18c-6-8 4-12 0-20M50 16c-7-10 6-14 1-24M70 18c-6-8 4-12 0-20"/>
+    </g>
+    <!-- flatbread -->
+    <g transform="translate(40 150)">
+      <ellipse cx="40" cy="30" rx="40" ry="26"/><ellipse cx="40" cy="30" rx="30" ry="18"/>
+      <circle cx="30" cy="26" r="1.5"/><circle cx="46" cy="34" r="1.5"/><circle cx="52" cy="24" r="1.5"/><circle cx="36" cy="37" r="1.5"/>
+    </g>
+    <!-- bowl with steam -->
+    <g transform="translate(200 140)">
+      <path d="M0 30h84a42 30 0 0 1-84 0z"/><path d="M30 54h24"/>
+      <path d="M26 20c-5-6 5-9 0-16M42 20c-5-6 5-9 0-16M58 20c-5-6 5-9 0-16"/>
+    </g>
+    <!-- chicken drumstick -->
+    <g transform="translate(120 96) rotate(20 30 30)">
+      <path d="M8 20c0-14 20-18 30-8s6 26-8 30l-10 14"/><circle cx="18" cy="60" r="5"/><circle cx="26" cy="62" r="5"/>
+    </g>
+    <!-- pot -->
+    <g transform="translate(34 250)">
+      <path d="M6 14h72v26a14 14 0 0 1-14 14H20A14 14 0 0 1 6 40z"/><path d="M0 14h84M-4 22h10M78 22h10M36 8h12"/>
+    </g>
+    <!-- mint leaf -->
+    <g transform="translate(150 250)">
+      <path d="M0 40C0 10 30 0 50 0 50 20 40 50 0 40z"/><path d="M0 40L36 10"/>
+    </g>
+    <!-- second skewer -->
+    <g transform="translate(222 262) rotate(18 40 20)">
+      <path d="M0 20h90"/><circle cx="16" cy="20" r="8"/><circle cx="36" cy="20" r="7"/><circle cx="56" cy="20" r="8"/><circle cx="74" cy="20" r="6"/>
+    </g>
+  </g>
+</svg>
